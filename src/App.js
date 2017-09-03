@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as BooksAPI from './service/BooksAPI.mock';
 import 'semantic-ui-css/semantic.min.css';
+import './App.css';
 import List from './component/List';
 import BookListItem from './component/BookListItem'
 import ShelfEnum from './enum/shelf.enum';
