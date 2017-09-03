@@ -10,5 +10,8 @@
             "modules": true
         },
         "sourceType": "module"
+    },
+    "env": {
+        "browser": true
     }
 }
