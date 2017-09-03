@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import ShelfEnum from '../enum/shelf.enum';
+import Dropdown from './Dropdown'
 
 export class BookListItem extends Component {
   static propTypes = {
@@ -8,11 +10,32 @@ export class BookListItem extends Component {
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.string,
     authors: PropTypes.arrayOf(PropTypes.string),
-    shelfControl: PropTypes.node,
+    shelf: PropTypes.string.isRequired,
+    onChangeShelf: PropTypes.func.isRequired,
   }
 
+  options = [
+    {
+        value: '',
+        text: 'Move to...',
+        isSelected: true
+    },
+    {
+        value: ShelfEnum.CURRENTLY_READING,
+        text: ShelfEnum.stringFromEnum(ShelfEnum.CURRENTLY_READING)
+    },
+    {
+        value: ShelfEnum.WANT_TO_READ,
+        text: ShelfEnum.stringFromEnum(ShelfEnum.WANT_TO_READ)
+    },
+    {
+        value: ShelfEnum.READ,
+        text: ShelfEnum.stringFromEnum(ShelfEnum.READ)
+    },
+  ]
+
   render() {
-    let {imageSrc, title, subtitle, authors, shelfControl} = this.props;
+    let {id, imageSrc, title, subtitle, authors, shelf, onChangeShelf} = this.props;
     subtitle = subtitle ? `: ${subtitle}` : '';
     authors = authors.join(', ');
 
@@ -27,7 +50,12 @@ export class BookListItem extends Component {
                     <span>{authors}</span>
                 </div>
                 <div className='extra'>
-                    {shelfControl}
+                    <Dropdown 
+                        options={this.options.filter((option) => option.value !== shelf)} 
+                        onChange={(shelf) => {
+                            onChangeShelf(id, shelf);
+                        }} 
+                        />
                 </div>
             </div>
         </div>

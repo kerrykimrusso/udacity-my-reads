@@ -21,6 +21,21 @@ class App extends Component {
         })
       });
   }
+
+  changeShelf = (id, toShelf) => {
+    this.setState((prevState) => {
+      return {
+        books: prevState.books.map((book) => {
+          const updatedBook = {
+            shelf: toShelf
+          };
+
+          if(id === book.id) return Object.assign({}, book, updatedBook);
+          return book;
+        })
+      };
+    });
+  }
   
   getCurrentlyReading = () => this.state.books.filter((book) => book.shelf === ShelfEnum.CURRENTLY_READING);
 
@@ -28,16 +43,19 @@ class App extends Component {
 
   getRead = () => this.state.books.filter((book) => book.shelf === ShelfEnum.READ);
 
-  createBookListItemFromBook = (book) => <BookListItem 
-    key={book.id}
-    id={book.id}
-    imageSrc={book.imageLinks.smallThumbnail}
-    title={book.title}
-    subtitle={book.subtitle}
-    authors={book.authors}
-    description={book.description} 
-    shelfControl={''}
-  />;
+  createBookListItemFromBook = (book) => {
+    return (<BookListItem 
+      key={book.id}
+      id={book.id}
+      imageSrc={book.imageLinks.smallThumbnail}
+      title={book.title}
+      subtitle={book.subtitle}
+      authors={book.authors}
+      description={book.description}
+      shelf={book.shelf}
+      onChangeShelf={this.changeShelf}
+    />);
+  };
 
   render() {
     const listClasses = ['ui', 'items', 'unstackable'];
@@ -47,15 +65,18 @@ class App extends Component {
     let read = this.getRead().map(this.createBookListItemFromBook);
     
     return (
-      <div className='app ui equal width grid'>
+      <div className='app ui equal width grid container'>
         <div className='equal width row'>
           <div className='column'>
+            <h2 className='ui header'>Currently Reading</h2>
             <List classes={listClasses} items={currentlyReading} />
           </div>
           <div className='column'>
+            <h2 className='ui header'>Want to Read</h2>
             <List classes={listClasses} items={wantToRead} />
           </div>
           <div className='column'>
+            <h2 className='ui header'>Read</h2>
             <List classes={listClasses} items={read} />
           </div>
         </div>
