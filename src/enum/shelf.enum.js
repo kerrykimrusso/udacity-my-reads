@@ -18,4 +18,14 @@ Object.defineProperties(Shelf, {
     }
 });
 
+Shelf.stringFromEnum = function(enumType) {
+    const map = {
+        [Shelf.CURRENTLY_READING]: 'Currently Reading',
+        [Shelf.WANT_TO_READ]: 'Want to Read',
+        [Shelf.READ]: 'Read',
+    }
+
+    return map[enumType];
+}
+
 export default Shelf;
