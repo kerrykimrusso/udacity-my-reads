@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
+import {Route} from 'react-router-dom';
 import * as BooksAPI from './service/BooksAPI.mock';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
-import List from './component/List';
-import BookListItem from './component/BookListItem'
-import ShelfEnum from './enum/shelf.enum';
+import HomePage from './page/home.page';
 
 class App extends Component {
   state = {
@@ -36,50 +35,12 @@ class App extends Component {
       };
     });
   }
-  
-  getCurrentlyReading = () => this.state.books.filter((book) => book.shelf === ShelfEnum.CURRENTLY_READING);
-
-  getWantToRead = () => this.state.books.filter((book) => book.shelf === ShelfEnum.WANT_TO_READ);
-
-  getRead = () => this.state.books.filter((book) => book.shelf === ShelfEnum.READ);
-
-  createBookListItemFromBook = (book) => {
-    return (<BookListItem 
-      key={book.id}
-      id={book.id}
-      imageSrc={book.imageLinks.smallThumbnail}
-      title={book.title}
-      subtitle={book.subtitle}
-      authors={book.authors}
-      description={book.description}
-      shelf={book.shelf}
-      onChangeShelf={this.changeShelf}
-    />);
-  };
 
   render() {
-    const listClasses = ['ui', 'items', 'unstackable'];
-
-    let currentlyReading = this.getCurrentlyReading().map(this.createBookListItemFromBook);
-    let wantToRead = this.getWantToRead().map(this.createBookListItemFromBook);
-    let read = this.getRead().map(this.createBookListItemFromBook);
-    
     return (
-      <div className='app ui equal width grid container'>
-        <div className='equal width row'>
-          <div className='column'>
-            <h2 className='ui header'>Currently Reading</h2>
-            <List classes={listClasses} items={currentlyReading} />
-          </div>
-          <div className='column'>
-            <h2 className='ui header'>Want to Read</h2>
-            <List classes={listClasses} items={wantToRead} />
-          </div>
-          <div className='column'>
-            <h2 className='ui header'>Read</h2>
-            <List classes={listClasses} items={read} />
-          </div>
-        </div>
+      <div>
+        <Route exact path='/' render={() => <HomePage books={this.state.books} changeShelf={this.changeShelf}/>}/>
+        <Route exact path='/search' render={() => <div>Search page </div>}/>
       </div>
     );
   }
