@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import List from '../component/List';
 import BookListItem from '../component/BookListItem'
 import ShelfEnum from '../enum/shelf.enum';
+import Nav from '../component/Navigation';
 
 export default class HomePage extends Component {
   static propTypes = {
@@ -46,17 +47,18 @@ export default class HomePage extends Component {
     
     return (
       <div className='app ui equal width grid container'>
-        <div className='equal width row'>
+        <Nav />
+        <div className='first equal width row'>
           <div className='column'>
-            <h2 className='ui header'>Currently Reading</h2>
+            <h2 className='ui dividing header'>Currently Reading</h2>
             <List classes={listClasses} items={currentlyReading} />
           </div>
           <div className='column'>
-            <h2 className='ui header'>Want to Read</h2>
+            <h2 className='ui dividing header'>Want to Read</h2>
             <List classes={listClasses} items={wantToRead} />
           </div>
           <div className='column'>
-            <h2 className='ui header'>Read</h2>
+            <h2 className='ui dividing header'>Read</h2>
             <List classes={listClasses} items={read} />
           </div>
         </div>
