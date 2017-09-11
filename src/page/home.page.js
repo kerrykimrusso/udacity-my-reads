@@ -4,6 +4,7 @@ import List from '../component/List';
 import { createBookListItemFromBook as bookToListItem } from '../component/common/ComponentCreator';
 import ShelfEnum from '../enum/shelf.enum';
 import Nav from '../component/Navigation';
+import { getBooksOnShelf } from '../component/common/BookUtils';
 
 export default class HomePage extends Component {
   static propTypes = {
@@ -18,22 +19,16 @@ export default class HomePage extends Component {
 	changeShelf: PropTypes.func.isRequired,
   }
 
-  getCurrentlyReading = () => this.props.books.filter((book) => book.shelf === ShelfEnum.CURRENTLY_READING);
-  
-    getWantToRead = () => this.props.books.filter((book) => book.shelf === ShelfEnum.WANT_TO_READ);
-  
-    getRead = () => this.props.books.filter((book) => book.shelf === ShelfEnum.READ);
-
 	createBookListItemFromBook = (book) => {
 		return bookToListItem(book, this.props.changeShelf);
 	}
 
   render() {
     const listClasses = ['ui', 'items', 'unstackable'];
-
-    let currentlyReading = this.getCurrentlyReading().map(this.createBookListItemFromBook);
-    let wantToRead = this.getWantToRead().map(this.createBookListItemFromBook);
-    let read = this.getRead().map(this.createBookListItemFromBook);
+    const books = this.props.books;
+    let currentlyReading = getBooksOnShelf(ShelfEnum.CURRENTLY_READING, books).map(this.createBookListItemFromBook);
+    let wantToRead = getBooksOnShelf(ShelfEnum.WANT_TO_READ, books).map(this.createBookListItemFromBook);
+    let read = getBooksOnShelf(ShelfEnum.READ, books).map(this.createBookListItemFromBook);
     
     return (
       <div className='app ui equal width grid container'>
