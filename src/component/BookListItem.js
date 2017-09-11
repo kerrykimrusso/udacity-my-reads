@@ -10,7 +10,7 @@ export class BookListItem extends Component {
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.string,
     authors: PropTypes.arrayOf(PropTypes.string),
-    shelf: PropTypes.string.isRequired,
+    shelf: PropTypes.string,
     onChangeShelf: PropTypes.func.isRequired,
   }
 
@@ -37,7 +37,7 @@ export class BookListItem extends Component {
   render() {
     let {id, imageSrc, title, subtitle, authors, shelf, onChangeShelf} = this.props;
     subtitle = subtitle ? `: ${subtitle}` : '';
-    authors = authors.join(', ');
+    authors = authors ? authors.join(', ') : '';
 
     return (
         <div className='ui item segment'>
