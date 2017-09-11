@@ -5,6 +5,9 @@
   "dependencies": {
     "classnames": "2.2.5",
     "escape-string-regexp": "1.0.5",
+    "form-serialize": "0.7.2",
+    "qa": "0.0.1",
+    "querystringify": "1.0.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-router-dom": "4.2.2",

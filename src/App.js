@@ -4,6 +4,8 @@ import * as BooksAPI from './service/BooksAPI';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 import HomePage from './page/home.page';
+import SearchPage from './page/search.page';
+import qs from 'querystringify';
 
 class App extends Component {
   state = {
@@ -21,13 +23,13 @@ class App extends Component {
       });
   }
 
-  changeShelf = (id, toShelf) => {
+  addBook = (book) => {
     this.setState((prevState) => {
       return {
-        books: prevState.books.map((book) => {
-          const updatedBook = {
-            shelf: toShelf
-          };
+        books: [...prevState.books, book]
+      }
+    })
+  }
 
   changeShelf = (id, toShelf) => {
     let bookToUpdate;
@@ -56,8 +58,11 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Route exact path='/' render={() => <HomePage books={this.state.books} changeShelf={this.changeShelf}/>}/>
-        <Route exact path='/search' render={() => <div>Search page </div>}/>
+        <Route exact path='/' render={() => <HomePage books={this.state.books} changeShelf={this.changeShelf}/> }/>
+        <Route exact path='/search' render={({location}) => {
+          const query = qs.parse(location.search).q;
+          return <SearchPage books={this.state.books} query={query} changeShelf={this.changeShelf}/> 
+        }}/>
       </div>
     );
   }
