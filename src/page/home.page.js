@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import List from '../component/List';
-import BookListItem from '../component/BookListItem'
+import { createBookListItemFromBook as bookToListItem } from '../component/common/ComponentCreator';
 import ShelfEnum from '../enum/shelf.enum';
 import Nav from '../component/Navigation';
 
@@ -9,7 +9,7 @@ export default class HomePage extends Component {
   static propTypes = {
     books: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
-        imageSrc: PropTypes.string.isRequired,
+        imageLinks: PropTypes.objectOf(PropTypes.string).isRequired,
         title: PropTypes.string.isRequired,
         subtitle: PropTypes.string,
         authors: PropTypes.arrayOf(PropTypes.string),
@@ -23,20 +23,10 @@ export default class HomePage extends Component {
     getWantToRead = () => this.props.books.filter((book) => book.shelf === ShelfEnum.WANT_TO_READ);
   
     getRead = () => this.props.books.filter((book) => book.shelf === ShelfEnum.READ);
-  
-    createBookListItemFromBook = (book) => {
-      return (<BookListItem 
-        key={book.id}
-        id={book.id}
-        imageSrc={book.imageLinks.smallThumbnail}
-        title={book.title}
-        subtitle={book.subtitle}
-        authors={book.authors}
-        description={book.description}
-        shelf={book.shelf}
-        onChangeShelf={this.props.changeShelf}
-      />);
-    };
+
+	createBookListItemFromBook = (book) => {
+		return bookToListItem(book, this.props.changeShelf);
+	}
 
   render() {
     const listClasses = ['ui', 'items', 'unstackable'];
