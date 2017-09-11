@@ -5,7 +5,7 @@ export const createBookListItemFromBook = (book, changeShelf) => {
     return (<BookListItem 
       key={book.id}
       id={book.id}
-      imageSrc={book.imageLinks.smallThumbnail}
+      imageSrc={book.imageLinks ? book.imageLinks.smallThumbnail : ''} // TODO: add placeholder image
       title={book.title}
       subtitle={book.subtitle}
       authors={book.authors}
