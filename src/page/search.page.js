@@ -20,7 +20,7 @@ export default class SearchPage extends Component {
         shelf: PropTypes.string.isRequired,
     })).isRequired,
     query: PropTypes.string,
-	changeShelf: PropTypes.func.isRequired,
+	addBook: PropTypes.func.isRequired,
   }
   
   static contextTypes = {
@@ -47,7 +47,12 @@ export default class SearchPage extends Component {
   }
 
   createBookListItemFromBook = (book) => {
-    return bookToListItem(book, this.props.changeShelf);
+    return bookToListItem(book, this.onAddBookToShelf.bind(null, book));
+}
+
+onAddBookToShelf = (book, id, shelf) => {
+    book.shelf = shelf;
+    this.props.addBook(book);
 }
 
 onSearchSubmit = (e) => {
@@ -79,7 +84,7 @@ componentDidMount = () => {
                 <div className='column'>
                     <form className='ui fluid right action left icon input' onSubmit={this.onSearchSubmit}>
                         <i className='icon search'/>
-                        <TextInput name='q' placeholder='Find a Book' value={query} ref={(node) => this.searchInput = node}/>
+                        <TextInput name='q' placeholder='Find a Book' value={query}/>
                         <button className='ui button'>Search</button>
                     </form>
                 </div>

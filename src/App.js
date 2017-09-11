@@ -61,7 +61,7 @@ class App extends Component {
         <Route exact path='/' render={() => <HomePage books={this.state.books} changeShelf={this.changeShelf}/> }/>
         <Route exact path='/search' render={({location}) => {
           const query = qs.parse(location.search).q;
-          return <SearchPage books={this.state.books} query={query} changeShelf={this.changeShelf}/> 
+          return <SearchPage books={this.state.books} query={query} addBook={this.addBook}/> 
         }}/>
       </div>
     );
