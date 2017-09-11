@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import * as BooksAPI from '../service/BooksAPI';
 import { createBookListItemFromBook as bookToListItem } from '../component/common/ComponentCreator';
-import FixedMenu from '../component/FixedMenu';
 import List from '../component/List';
 import Nav from '../component/Navigation';
 import TextInput from '../component/TextInput';
