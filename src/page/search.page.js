@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import * as BooksAPI from '../service/BooksAPI';
 import { createBookListItemFromBook as bookToListItem } from '../component/common/ComponentCreator';
+import { getRandomLibraryBookFromShelf } from '../component/common/BookUtils';
 import List from '../component/List';
 import Nav from '../component/Navigation';
 import TextInput from '../component/TextInput';
 import qs from 'querystringify';
 import serialize from 'form-serialize';
+import ShelfEnum from '../enum/shelf.enum';
+
 
 export default class SearchPage extends Component {
   static propTypes = {
@@ -32,15 +34,41 @@ export default class SearchPage extends Component {
   }
 
   state = {
-    books: []
+    books: [],
+    recommendations: [],
+    baseBook: null
   }
 
   search = (query) => {
+    if(!query) return;
+
     BooksAPI.search(query)
         .then((books) => {
             this.setState((prevState) => {
                 return {
-                    books
+                    books: books.error ? [] : books
+                }
+            })
+        });
+  }
+
+  getSimilarBooks(baseBook, property) {
+      const notKeywords = {A:1, AN:1, WITH:1, THE:1, FOR:1, TO:1, IN:1, OF:1, IS:1, LEARNING:1};
+      let isKeyword = (word) => {
+        return !(word.toUpperCase() in notKeywords);
+      };
+
+      const query = baseBook[property] ? 
+        baseBook[property].split(' ').filter(isKeyword)[0] : null;
+      console.log(query);
+        if(!query) return;
+
+    BooksAPI.search(query)
+        .then((recommendations) => {
+            this.setState((prevState) => {
+                return {
+                    baseBook,
+                    recommendations: recommendations.error ? [] : recommendations
                 }
             })
         });
@@ -68,13 +96,26 @@ onSearchSubmit = (e) => {
     this.search(searchFormData.q);
 }
 
-componentDidMount = () => {
+componentWillMount = () => {
   if(this.props.query) this.search(this.props.query);
 }
 
+componentWillReceiveProps = (nextProps) => {
+    if(this.state.baseBook) return;
+
+    const shelvesToPickRandomBook = [ShelfEnum.CURRENTLY_READING, ShelfEnum.WANT_TO_READ, ShelfEnum.READ];
+    const randomLibraryBook = getRandomLibraryBookFromShelf(shelvesToPickRandomBook, nextProps.books);
+    if(randomLibraryBook) this.getSimilarBooks(randomLibraryBook, 'title');
+}
+
+
   render() {
     const listClasses = ['ui', 'items', 'unstackable'];
-    const searchResults = this.state.books.map(this.createBookListItemFromBook);
+
+    const { books, recommendations } = this.state;
+    const searchResults = books.map(this.createBookListItemFromBook);
+    const recommendedItems = recommendations.map(this.createBookListItemFromBook);
+    
     const {query} = this.props;
 
     return (
@@ -94,7 +135,20 @@ componentDidMount = () => {
                     <List classes={listClasses} items={searchResults}/>
                 </div>
             </div>
+            {!this.state.books && this.state.baseBook && 
+                <Recommendations listClasses={listClasses} baseBook={this.state.baseBook} bookItems={recommendedItems}/>}
         </div>
     );
   }
+}
+
+const Recommendations = ({listClasses, baseBook, bookItems}) => {
+    return (
+        <div className='equal width row'>
+            <div className='column'>
+                <h2 className='ui dividing header'>Because <em>{baseBook.title}</em> Is In Your Library</h2>
+                <List classes={listClasses} items={bookItems} />
+            </div>
+        </div>
+    );
 }
