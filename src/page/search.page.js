@@ -43,6 +43,8 @@ export default class SearchPage extends Component {
     baseBook: null
   }
 
+  idsOfBooksInLibraryToShelf = {};
+
   search = (query) => {
     if(!query) return;
 
@@ -66,6 +68,14 @@ export default class SearchPage extends Component {
     
         const shelvesToPickRandomBook = [ShelfEnum.CURRENTLY_READING, ShelfEnum.WANT_TO_READ, ShelfEnum.READ];
         return getRandomLibraryBookFromShelf(shelvesToPickRandomBook, books);
+    }
+
+    setShelfOfBook(booksToUpdate, bookIdsToShelf) {
+        booksToUpdate.forEach((book) => {
+            if(book.id in bookIdsToShelf) book.shelf = bookIdsToShelf[book.id];
+        });
+
+        return booksToUpdate;
     }
 
   getSimilarBooks(baseBook, property) {
@@ -121,14 +131,20 @@ componentWillMount = () => {
 
 componentWillReceiveProps = (nextProps) => {
   this.getRecommendations(nextProps.books);
+
+  nextProps.books.forEach((book) => {
+    this.idsOfBooksInLibraryToShelf[book.id] = book.shelf;
+  });
 }
 
   render() {
     const listClasses = ['ui', 'items', 'unstackable'];
 
     const { books, recommendations } = this.state;
-    const searchResults = books.map(this.createBookListItemFromBook);
-    const recommendedItems = recommendations.map(this.createBookListItemFromBook);
+    const searchResults = this.setShelfOfBook(books, this.idsOfBooksInLibraryToShelf)
+        .map(this.createBookListItemFromBook);
+    const recommendedItems = this.setShelfOfBook(recommendations, this.idsOfBooksInLibraryToShelf)
+        .map(this.createBookListItemFromBook);
     
     const {query} = this.props;
 
