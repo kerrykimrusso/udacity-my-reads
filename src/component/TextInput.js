@@ -27,7 +27,7 @@ export default class TextInput extends Component {
       const newValue = e.target.value;
       const newState = {
         value: newValue,
-        error: validator && validator(newValue)
+        error: validator ? validator(newValue) : null,
       };
 
       this.setState(() => {
