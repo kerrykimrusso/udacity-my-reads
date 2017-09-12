@@ -40,7 +40,7 @@ export default class SearchPage extends Component {
   state = {
     books: [],
     recommendations: [],
-    baseBook: null
+    baseBook: null,
   }
 
   idsOfBooksInLibraryToShelf = {};
@@ -101,46 +101,45 @@ export default class SearchPage extends Component {
   }
 
   createBookListItemFromBook = (book) => {
-    return bookToListItem(book, this.onAddBookToShelf.bind(null, book));
-}
+        return bookToListItem(book, this.onAddBookToShelf.bind(null, book));
+    }
 
-onAddBookToShelf = (book, id, shelf) => {
-    book.shelf = shelf;
-    this.props.addBook(book);
-}
+    onAddBookToShelf = (book, id, shelf) => {
+        book.shelf = shelf;
+        this.props.addBook(book);
+    }
 
-onSearchSubmit = (e) => {
-    e.preventDefault();
+    onSearchSubmit = (e) => {
+        e.preventDefault();
 
-    const {history, route} = this.context.router;
-    const searchFormData = serialize(e.target, { hash: true });
-    const querystring = qs.parse(route.location.search);
-    Object.assign(querystring, searchFormData)
-    
-    history.push(`${route.location.pathname}?${qs.stringify(querystring)}`);
+        const {history, route} = this.context.router;
+        const searchFormData = serialize(e.target, { hash: true });
+        const querystring = qs.parse(route.location.search);
+        Object.assign(querystring, searchFormData)
+        
+        history.push(`${route.location.pathname}?${qs.stringify(querystring)}`);
 
-    this.search(searchFormData.q);
-}
+        this.search(searchFormData.q);
+    }
 
-componentWillMount = () => {
-    const {query, books} = this.props;
-    if(query) this.search(query, books);
+    componentWillMount = () => {
+        const {query, books} = this.props;
+        if(query.length) this.search(query, books);
+        else this.getRecommendations(books);
+    }
 
-    this.getRecommendations(books);
-}
-
-componentWillReceiveProps = (nextProps) => {
-  this.getRecommendations(nextProps.books);
-
-  nextProps.books.forEach((book) => {
-    this.idsOfBooksInLibraryToShelf[book.id] = book.shelf;
-  });
-}
+    componentWillReceiveProps = (nextProps) => {
+        this.getRecommendations(nextProps.books);
+        
+        nextProps.books.forEach((book) => {
+            this.idsOfBooksInLibraryToShelf[book.id] = book.shelf;
+        });
+    }
 
   render() {
     const listClasses = ['ui', 'items', 'unstackable'];
 
-    const { books, recommendations } = this.state;
+    const { books, recommendations, baseBook } = this.state;
     const searchResults = this.setShelfOfBook(books, this.idsOfBooksInLibraryToShelf)
         .map(this.createBookListItemFromBook);
     const recommendedItems = this.setShelfOfBook(recommendations, this.idsOfBooksInLibraryToShelf)
@@ -160,13 +159,16 @@ componentWillReceiveProps = (nextProps) => {
                     </form>
                 </div>
             </div>
+            <div className='equal width row centered'>
+                {query.length > 0 && <SearchResultsCount count={books.length}/>}
+            </div>
             <div className='equal width row'>
                 <div className='column'>
                     <List classes={listClasses} items={searchResults}/>
                 </div>
             </div>
-            {!this.state.books.length && this.state.baseBook && 
-                <Recommendations listClasses={listClasses} baseBook={this.state.baseBook} bookItems={recommendedItems}/>}
+            {books.length === 0 && baseBook && 
+                <Recommendations listClasses={listClasses} baseBook={baseBook} bookItems={recommendedItems}/>}
         </div>
     );
   }
@@ -181,4 +183,13 @@ const Recommendations = ({listClasses, baseBook, bookItems}) => {
             </div>
         </div>
     );
+}
+
+const SearchResultsCount = ({count}) => {
+    return (
+        <div className='ui mini horizontal statistic'>
+            <div className='value'>{count}</div> 
+            <div className='label'>Books Found!</div>
+        </div>
+    )
 }
