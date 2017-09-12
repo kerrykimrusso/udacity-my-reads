@@ -79,7 +79,7 @@ export default class SearchPage extends Component {
     }
 
   getSimilarBooks(baseBook, property) {
-      const notKeywords = {A:1, AN:1, WITH:1, THE:1, FOR:1, TO:1, IN:1, OF:1, IS:1, LEARNING:1};
+      const notKeywords = {A:1, AN:1, WITH:1, THE:1, FOR:1, TO:1, IN:1, OF:1, IS:1, LEARNING:1, MEAN:1};
       let isKeyword = (word) => {
         return !(word.toUpperCase() in notKeywords);
       };
