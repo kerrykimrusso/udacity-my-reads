@@ -56,6 +56,18 @@ export default class SearchPage extends Component {
         });
   }
 
+    getRecommendations(books) {
+        const randomLibraryBook = this.getRandomBook(books);
+        if(randomLibraryBook) this.getSimilarBooks(randomLibraryBook, 'title');
+    }
+
+    getRandomBook(books) {
+        if(this.state.baseBook) return;
+    
+        const shelvesToPickRandomBook = [ShelfEnum.CURRENTLY_READING, ShelfEnum.WANT_TO_READ, ShelfEnum.READ];
+        return getRandomLibraryBookFromShelf(shelvesToPickRandomBook, books);
+    }
+
   getSimilarBooks(baseBook, property) {
       const notKeywords = {A:1, AN:1, WITH:1, THE:1, FOR:1, TO:1, IN:1, OF:1, IS:1, LEARNING:1};
       let isKeyword = (word) => {
@@ -64,10 +76,10 @@ export default class SearchPage extends Component {
 
       const query = baseBook[property] ? 
         baseBook[property].split(' ').filter(isKeyword)[0] : null;
-      console.log(query);
+
         if(!query) return;
 
-    BooksAPI.search(query)
+    BooksAPI.search(query, 5)
         .then((recommendations) => {
             this.setState((prevState) => {
                 return {
@@ -101,17 +113,15 @@ onSearchSubmit = (e) => {
 }
 
 componentWillMount = () => {
-  if(this.props.query) this.search(this.props.query);
+    const {query, books} = this.props;
+    if(query) this.search(query, books);
+
+    this.getRecommendations(books);
 }
 
 componentWillReceiveProps = (nextProps) => {
-    if(this.state.baseBook) return;
-
-    const shelvesToPickRandomBook = [ShelfEnum.CURRENTLY_READING, ShelfEnum.WANT_TO_READ, ShelfEnum.READ];
-    const randomLibraryBook = getRandomLibraryBookFromShelf(shelvesToPickRandomBook, nextProps.books);
-    if(randomLibraryBook) this.getSimilarBooks(randomLibraryBook, 'title');
+  this.getRecommendations(nextProps.books);
 }
-
 
   render() {
     const listClasses = ['ui', 'items', 'unstackable'];
@@ -139,7 +149,7 @@ componentWillReceiveProps = (nextProps) => {
                     <List classes={listClasses} items={searchResults}/>
                 </div>
             </div>
-            {!this.state.books && this.state.baseBook && 
+            {!this.state.books.length && this.state.baseBook && 
                 <Recommendations listClasses={listClasses} baseBook={this.state.baseBook} bookItems={recommendedItems}/>}
         </div>
     );
