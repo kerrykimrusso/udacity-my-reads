@@ -29,6 +29,8 @@ class App extends Component {
         books: [...prevState.books, book]
       }
     })
+
+    BooksAPI.update(book, book.shelf);
   }
 
   changeShelf = (id, toShelf) => {
