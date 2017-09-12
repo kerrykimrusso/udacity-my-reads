@@ -15,9 +15,11 @@ export default class TextInput extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    this.state = {
+    this.setState((prevState) => {
+      return {
         value: nextProps.value,
-    }
+      }
+    });
   }
 
   onChange = (e) => {
