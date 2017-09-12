@@ -24,6 +24,10 @@ export default class SearchPage extends Component {
     query: PropTypes.string,
 	addBook: PropTypes.func.isRequired,
   }
+
+  static defaultProps = {
+      query: '',
+  }
   
   static contextTypes = {
     router: PropTypes.shape({
