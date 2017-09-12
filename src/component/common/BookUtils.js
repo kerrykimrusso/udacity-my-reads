@@ -1,3 +1,5 @@
+import ShelfEnum from '../../enum/shelf.enum';
+
 function getBooksOnShelf(shelf, books) { 
     if(!books) return;
     if(!shelf) return books;
@@ -20,7 +22,17 @@ function getRandomLibraryBookFromShelf(shelves, books) {
     return booksOnShelf[randomIndex];
 }
 
+function getShelfWordingForRecommendationTitle(shelf) {
+    switch(shelf) {
+        case ShelfEnum.CURRENTLY_READING: 
+            return `Are ${ShelfEnum.stringFromEnum(ShelfEnum.CURRENTLY_READING)}`;
+        default: 
+            return ShelfEnum.stringFromEnum(ShelfEnum.CURRENTLY_READING);
+    }
+}
+
 export {
     getBooksOnShelf,
-    getRandomLibraryBookFromShelf
+    getRandomLibraryBookFromShelf,
+    getShelfWordingForRecommendationTitle
 }

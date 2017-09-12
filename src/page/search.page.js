@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as BooksAPI from '../service/BooksAPI';
 import { createBookListItemFromBook as bookToListItem } from '../component/common/ComponentCreator';
-import { getRandomLibraryBookFromShelf } from '../component/common/BookUtils';
+import { getRandomLibraryBookFromShelf, getShelfWordingForRecommendationTitle } from '../component/common/BookUtils';
 import List from '../component/List';
 import Nav from '../component/Navigation';
 import TextInput from '../component/TextInput';
@@ -160,7 +160,7 @@ const Recommendations = ({listClasses, baseBook, bookItems}) => {
     return (
         <div className='equal width row'>
             <div className='column'>
-                <h2 className='ui dividing header'>Because <em>{baseBook.title}</em> Is In Your Library</h2>
+                <h2 className='ui dividing header'>Because You {getShelfWordingForRecommendationTitle(baseBook.shelf)} <em>{baseBook.title}</em> </h2>
                 <List classes={listClasses} items={bookItems} />
             </div>
         </div>
