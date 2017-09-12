@@ -114,6 +114,7 @@ export default class SearchPage extends Component {
 
         const {history, route} = this.context.router;
         const searchFormData = serialize(e.target, { hash: true });
+        if(!('q' in searchFormData)) searchFormData.q = '';
         const querystring = qs.parse(route.location.search);
         Object.assign(querystring, searchFormData)
         
@@ -131,6 +132,13 @@ export default class SearchPage extends Component {
     componentWillReceiveProps = (nextProps) => {
         this.getRecommendations(nextProps.books);
         
+        if(nextProps.query.length === 0) {
+            this.setState((prevState) => {
+                return {
+                    books: [],
+                }
+            })
+        }
         nextProps.books.forEach((book) => {
             this.idsOfBooksInLibraryToShelf[book.id] = book.shelf;
         });
