@@ -6,8 +6,6 @@ import { getRandomLibraryBookFromShelf, getShelfWordingForRecommendationTitle } 
 import List from '../component/List';
 import Nav from '../component/Navigation';
 import TextInput from '../component/TextInput';
-import qs from 'querystringify';
-import serialize from 'form-serialize';
 import ShelfEnum from '../enum/shelf.enum';
 
 
@@ -21,20 +19,7 @@ export default class SearchPage extends Component {
         authors: PropTypes.arrayOf(PropTypes.string).isRequired,
         shelf: PropTypes.string.isRequired,
     })).isRequired,
-    query: PropTypes.string,
 	addBook: PropTypes.func.isRequired,
-  }
-
-  static defaultProps = {
-      query: '',
-  }
-  
-  static contextTypes = {
-    router: PropTypes.shape({
-        history: PropTypes.object.isRequired,
-        route: PropTypes.object.isRequired,
-        staticContext: PropTypes.object
-      })
   }
 
   state = {
@@ -44,6 +29,7 @@ export default class SearchPage extends Component {
   }
 
   idsOfBooksInLibraryToShelf = {};
+  searchTimer = null;
 
   search = (query) => {
     if(!query) return;
@@ -109,36 +95,23 @@ export default class SearchPage extends Component {
         this.props.addBook(book);
     }
 
-    onSearchSubmit = (e) => {
-        e.preventDefault();
+    onSearchSubmit = (name, query, err) => {
+        if(this.searchTimer) clearTimeout(this.searchTimer);
 
-        const {history, route} = this.context.router;
-        const searchFormData = serialize(e.target, { hash: true });
-        if(!('q' in searchFormData)) searchFormData.q = '';
-        const querystring = qs.parse(route.location.search);
-        Object.assign(querystring, searchFormData)
-        
-        history.push(`${route.location.pathname}?${qs.stringify(querystring)}`);
-
-        this.search(searchFormData.q);
+        this.searchTimer = setTimeout(() => {
+            this.search(query);
+            clearTimeout(this.searchTimer);
+        }, 250);
     }
 
     componentWillMount = () => {
-        const {query, books} = this.props;
-        if(query.length) this.search(query, books);
-        else this.getRecommendations(books);
+        const {books} = this.props;
+        this.getRecommendations(books);
     }
 
     componentWillReceiveProps = (nextProps) => {
         this.getRecommendations(nextProps.books);
         
-        if(nextProps.query.length === 0) {
-            this.setState((prevState) => {
-                return {
-                    books: [],
-                }
-            })
-        }
         nextProps.books.forEach((book) => {
             this.idsOfBooksInLibraryToShelf[book.id] = book.shelf;
         });
@@ -152,23 +125,21 @@ export default class SearchPage extends Component {
         .map(this.createBookListItemFromBook);
     const recommendedItems = this.setShelfOfBook(recommendations, this.idsOfBooksInLibraryToShelf)
         .map(this.createBookListItemFromBook);
-    
-    const {query} = this.props;
 
     return (
         <div className='app ui equal width grid container'>
             <Nav/>
             <div className='first equal width row'>
                 <div className='column'>
-                    <form className='ui fluid right action left icon input' onSubmit={this.onSearchSubmit}>
+                    <form className='ui fluid right action left icon input'>
                         <i className='icon search'/>
-                        <TextInput name='q' placeholder='Find a Book' value={query}/>
+                        <TextInput name='q' placeholder='Find a Book' onChange={this.onSearchSubmit}/>
                         <button className='ui button'>Search</button>
                     </form>
                 </div>
             </div>
             <div className='equal width row centered'>
-                {query.length > 0 && <SearchResultsCount count={books.length}/>}
+                {books.length > 0 && <SearchResultsCount count={books.length}/>}
             </div>
             <div className='equal width row'>
                 <div className='column'>

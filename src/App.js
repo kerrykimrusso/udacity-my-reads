@@ -5,7 +5,6 @@ import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 import HomePage from './page/home.page';
 import SearchPage from './page/search.page';
-import qs from 'querystringify';
 
 class App extends Component {
   state = {
@@ -61,9 +60,8 @@ class App extends Component {
     return (
       <div>
         <Route exact path='/' render={() => <HomePage books={this.state.books} changeShelf={this.changeShelf}/> }/>
-        <Route exact path='/search' render={({location}) => {
-          const query = qs.parse(location.search).q;
-          return <SearchPage books={this.state.books} query={query} addBook={this.addBook}/> 
+        <Route exact path='/search' render={() => {
+          return <SearchPage books={this.state.books} addBook={this.addBook}/> 
         }}/>
       </div>
     );
