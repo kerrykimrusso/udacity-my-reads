@@ -4,6 +4,7 @@ This project was done for the [React Nandodegree course offered by Udacity](http
 ## Table of Contents
   - [Installation](#installation)
   - [Usage](#usage)
+  - [Known Issues](#known-issues)
   - [Roadmap](#roadmap)
   - [License](#license)
 
@@ -27,9 +28,12 @@ Within the applicaiton, you're able to search for books and add them to one of t
 - Want To Read
 - Read
 
-_Because Udacity created the backend, there is a list of **[acceptable search terms](https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md)**_
+_Because Udacity created the backend, there is a list of **[acceptable search terms](https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md)**. I do not guarantee the others will work._
 
 After finding a book and adding it to a list, click the **Library** link in the main navigation to view it and any other books you have added, and manage what list your books appear on.
+
+## Known Issues
+- The recommend feature on the search page may not return results because the search API has a limit on the acceptable search terms. The feature randomly chooses a book in your library and searches based on the first non-filtered term. The filtered words were hardcoded by me to exclude most articles and other small words only.
 
 ## Roadmap
 - [ ] Pass the Udacity submission requirements
