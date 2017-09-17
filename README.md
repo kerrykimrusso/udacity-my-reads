@@ -32,11 +32,11 @@ _Because Udacity created the backend, there is a list of **[acceptable search te
 After finding a book and adding it to a list, click the **Library** link in the main navigation to view it and any other books you have added, and manage what list your books appear on.
 
 ## Roadmap
-[ ] Pass the Udacity submission requirements
-[ ] Add features like being able to remove or archive books you don't want to see in your library, etc.
-[ ] Improve design
-[ ] Utilize third-party real-world API for search service
-[ ] Implement own node.js backend
+- [ ] Pass the Udacity submission requirements
+- [ ] Add features like being able to remove or archive books you don't want to see in your library, etc.
+- [ ] Improve design
+- [ ] Utilize third-party real-world API for search service
+- [ ] Implement own node.js backend
 
 ## License
 As stated in the summary, this was a project for the [React Nandodegree course offered by Udacity](https://classroom.udacity.com/nanodegrees/nd019/syllabus/core-curriculum). If you are currently taking this class, I would encourage you to not copy my project in any way. Having said that, the license won't stop you assuming you give me credit.
