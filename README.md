@@ -36,7 +36,7 @@ After finding a book and adding it to a list, click the **Library** link in the 
 - The recommend feature on the search page may not return results because the search API has a limit on the acceptable search terms. The feature randomly chooses a book in your library and searches based on the first non-filtered term. The filtered words were hardcoded by me to exclude most articles and other small words only.
 
 ## Roadmap
-- [ ] Pass the Udacity submission requirements
+- [x] Pass the Udacity submission requirements
 - [ ] Add features like being able to remove or archive books you don't want to see in your library, etc.
 - [ ] Improve design
 - [ ] Utilize third-party real-world API for search service
