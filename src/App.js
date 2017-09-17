@@ -11,7 +11,7 @@ class App extends Component {
     books: []
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     BooksAPI.getAll()
       .then((books) => {
         this.setState((prevState) => {
@@ -23,13 +23,14 @@ class App extends Component {
   }
 
   addBook = (book) => {
-    this.setState((prevState) => {
-      return {
-        books: [...prevState.books, book]
-      }
-    })
-
-    BooksAPI.update(book, book.shelf);
+    BooksAPI.update(book, book.shelf)
+      .then(() => {
+        this.setState((prevState) => {
+          return {
+            books: [...prevState.books, book]
+          }
+        })
+      });
   }
 
   changeShelf = (id, toShelf) => {
@@ -47,13 +48,14 @@ class App extends Component {
       return book;
     });
 
-    this.setState((prevState) => {
-      return {
-        books
-      };
-    });
-
-    BooksAPI.update(bookToUpdate, toShelf);
+    BooksAPI.update(bookToUpdate, toShelf)
+      .then(() => {
+        this.setState((prevState) => {
+          return {
+            books
+          };
+        });
+      });
   }
 
   render() {
