@@ -1,35 +1,64 @@
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
-
-Below you will find some information on how to perform common tasks.<br>
-You can find the most recent version of this guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
+# Summary
+This project was done for the [React Nandodegree course offered by Udacity](https://classroom.udacity.com/nanodegrees/nd019/syllabus/core-curriculum), specifically the **React Fundamentals** section. The focus of this project was to create a functional app that satisfied the user requirements. UI/UX improvements are in the roadmap. Minimum styling was done using [Semantic UI](https://www.npmjs.com/package/semantic-ui-css).
 
 ## Table of Contents
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Roadmap](#roadmap)
+  - [License](#license)
 
-- [Available Scripts](#available-scripts)
-  - [npm start](#npm-start)
-  - [npm test](#npm-test)
-  - [npm run build](#npm-run-build)
-
-## Available Scripts
+## Installation
+This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app), and **DID NOT** use the [starter template](https://github.com/udacity/reactnd-project-myreads-starter) offered by the course. However, the [Books API](https://github.com/udacity/reactnd-project-myreads-starter/blob/master/src/BooksAPI.js) was copied from there.
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm install`
+This will install all of the projects dependencies.
 
-Runs the app in the development mode.<br>
+## Usage
+
+### `npm start`
+Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+### Using the App
+Within the applicaiton, you're able to search for books and add them to one of three reading lists: 
+- Currently Reading
+- Want To Read
+- Read
 
-### `npm test`
+_Because Udacity created the backend, there is a list of **[acceptable search terms](https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md)**_
 
-Launches the test runner in the interactive watch mode.<br>
+After finding a book and adding it to a list, click the **Library** link in the main navigation to view it and any other books you have added, and manage what list your books appear on.
 
-### `npm run build`
+## Roadmap
+[ ] Pass the Udacity submission requirements
+[ ] Add features like being able to remove or archive books you don't want to see in your library, etc.
+[ ] Improve design
+[ ] Utilize third-party real-world API for search service
+[ ] Implement own node.js backend
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## License
+As stated in the summary, this was a project for the [React Nandodegree course offered by Udacity](https://classroom.udacity.com/nanodegrees/nd019/syllabus/core-curriculum). If you are currently taking this class, I would encourage you to not copy my project in any way. Having said that, the license won't stop you assuming you give me credit.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+MIT License
+
+Copyright (c) 2017 Kerry Russo
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
